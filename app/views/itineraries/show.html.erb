@@ -1,0 +1,24 @@
+<h1>Show for <%= @itinerary.name %></h1>
+
+<div style="width: 400px; margin: 0 auto">
+  <%= simple_form_for [@itinerary, @point] do |f| %>
+    <%= f.input :city %>
+    <%= f.submit 'add point' %>
+  <% end %>
+</div>
+
+<div
+  id="map"
+  style="width: 100%;
+  height: 600px;"
+  data-markers="<%= @markers.to_json %>"
+></div>
+
+<ul id="points">
+  <% @points.each do |point| %>
+    <li><%= point.city %></li>
+  <% end %>
+</ul>
+
+
+<%= javascript_pack_tag "createPoint" %>
