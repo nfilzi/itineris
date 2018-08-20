@@ -1,24 +1,32 @@
 <h1>Show for <%= @itinerary.name %></h1>
 
-<div style="width: 400px; margin: 0 auto">
-  <%= simple_form_for [@itinerary, @point] do |f| %>
-    <%= f.input :city %>
-    <%= f.submit 'add point' %>
-  <% end %>
+<style>
+   #wrapper { position: relative; }
+   #over_map { padding: 30px; width: 400px; position: absolute; top: 10px; left: 10px; z-index: 99; }
+</style>
+
+<div id="wrapper">
+  <div
+    id="map"
+    style="width: 100%;
+    height: 600px;"
+    data-markers="<%= @markers.to_json %>"
+  ></div>
+
+  <div id="over_map" style="background-color: white; display: flex; flex-direction: column; align-items: center; justify-content: space-around">
+    <div>
+      <%= simple_form_for [@itinerary, @point] do |f| %>
+        <%= f.input :city %>
+        <%= f.submit 'add point' %>
+      <% end %>
+    </div>
+
+    <ul id="points">
+      <% @points.each do |point| %>
+        <li><%= point.city %></li>
+      <% end %>
+    </ul>
+  </div>
 </div>
-
-<div
-  id="map"
-  style="width: 100%;
-  height: 600px;"
-  data-markers="<%= @markers.to_json %>"
-></div>
-
-<ul id="points">
-  <% @points.each do |point| %>
-    <li><%= point.city %></li>
-  <% end %>
-</ul>
-
 
 <%= javascript_pack_tag "createPoint" %>
