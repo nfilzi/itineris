@@ -1,6 +1,6 @@
 import GMaps from 'gmaps/gmaps.js';
 
-function listenToNewPointFormSubmission() {
+function listenForPointCreation() {
   const form = document.getElementById('new_point');
   form.addEventListener('submit', createPoint)
 }
@@ -8,15 +8,15 @@ function listenToNewPointFormSubmission() {
 function createPoint(submitEvent){
   submitEvent.preventDefault();
 
-  const form    = submitEvent.target;
-  let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  const form      = submitEvent.target;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   const submissionUrl = form.action;
-  const json_data     = JSON.stringify({city: form.elements.point_city.value});
+  const data          = JSON.stringify({city: form.elements.point_city.value});
 
   fetch(submissionUrl, {
     method: "POST",
-    body: json_data,
+    body: data,
     headers: {
       "Accept":       "application/json",
       "Content-Type": "application/json",
@@ -34,12 +34,11 @@ function createPoint(submitEvent){
 
 function addPointToMap(data) {
   const position = { lat: data.lat, lng: data.lng }
-
   data.animation = google.maps.Animation.DROP;
 
   // mapObj added in map.js accessible through window global state
   // could not make it work without it
-  const marker     = mapObj.addMarker(data);
+  const marker = mapObj.addMarker(data);
 
   mapObj.setCenter(position);
 }
@@ -55,4 +54,4 @@ function enableSubmitInput(form) {
   form.point_city.value = null;
 }
 
-listenToNewPointFormSubmission();
+export { listenForPointCreation };

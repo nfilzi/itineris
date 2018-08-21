@@ -18,7 +18,8 @@ class PointsController < ApplicationController
               locals: { point: @point }
             )
           },
-          label: @itinerary.points.count.to_s,
+          # Will be its position later, if ordering points is a feature
+          label: @itinerary.points.displayable_on_map.count.to_s,
           cardMarkup: {
             content: render_to_string(
               partial: "/points/card.html.erb",
