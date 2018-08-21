@@ -2,7 +2,7 @@ class ItinerariesController < ApplicationController
   def show
     @itinerary = Itinerary.find(params[:id])
 
-    @points  = @itinerary.points.where.not(latitude: nil, longitude: nil).order(created_at: :asc)
+    @points  = @itinerary.points.displayable_on_map.order(created_at: :asc)
     @markers = @points.map.with_index do |point, index|
       {
         lat: point.latitude,
