@@ -16,7 +16,7 @@ function createPoint(submitEvent){
 
   fetch(submissionUrl, {
     method: "POST",
-    body: data,
+    body: json_data,
     headers: {
       "Accept":       "application/json",
       "Content-Type": "application/json",
