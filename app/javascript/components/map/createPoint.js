@@ -1,20 +1,20 @@
 import GMaps from 'gmaps/gmaps.js';
 
-function listenToNewPointFormSubmission() {
-  var form = document.getElementById('new_point');
+function listenForPointCreation() {
+  const form = document.getElementById('new_point');
   form.addEventListener('submit', createPoint)
 }
 
 function createPoint(submitEvent){
   submitEvent.preventDefault();
 
-  var form      = submitEvent.target;
-  let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  const form      = submitEvent.target;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-  var submissionUrl = form.action;
-  var data          = JSON.stringify({city: form.elements.point_city.value});
+  const submissionUrl = form.action;
+  const data          = JSON.stringify({city: form.elements.point_city.value});
 
-  data = fetch(submissionUrl, {
+  fetch(submissionUrl, {
     method: "POST",
     body: data,
     headers: {
@@ -33,19 +33,18 @@ function createPoint(submitEvent){
 }
 
 function addPointToMap(data) {
-  var position = { lat: data.lat, lng: data.lng }
-
+  const position = { lat: data.lat, lng: data.lng }
   data.animation = google.maps.Animation.DROP;
 
   // mapObj added in map.js accessible through window global state
   // could not make it work without it
-  var marker     = mapObj.addMarker(data);
+  const marker = mapObj.addMarker(data);
 
   mapObj.setCenter(position);
 }
 
 function addPointToList(data) {
-  var pointsList = document.getElementById('points');
+  const pointsList = document.getElementById('points');
 
   pointsList.insertAdjacentHTML('beforeend', data.cardMarkup.content);
 }
@@ -55,4 +54,4 @@ function enableSubmitInput(form) {
   form.point_city.value = null;
 }
 
-listenToNewPointFormSubmission();
+export { listenForPointCreation };
